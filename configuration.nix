@@ -1,7 +1,17 @@
-{ config, pkgs, ... }:
-
 {
-  imports = [ ./hardware-configuration.nix ];
+  config,
+  lib,
+  pkgs,
+  modules,
+  inputs,
+  globals,
+  ...
+}: {
+
+  imports = [ 
+    ./hardware-configuration.nix 
+    inputs.dms.nixosModules.greeter
+];
 
 
   boot.loader.systemd-boot.enable = true;
@@ -13,12 +23,11 @@
   networking.hostName = "nixos"; 
 
   programs.niri.enable = true;
-
-  services.displayManager.sddm = {
+  programs.dank-material-shell.greeter = {
     enable = true;
-    wayland.enable = true;
+    compositor.name = "niri";
   };
-  services.displayManager.defaultSession = "niri";
+
   
   security.polkit.enable = true;
   programs.dconf.enable = true;
