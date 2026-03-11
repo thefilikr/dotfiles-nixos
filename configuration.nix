@@ -8,11 +8,13 @@
   ...
 }: {
 
-  imports = [ 
-    ./hardware-configuration.nix 
+  imports = [
+    ./hardware-configuration.nix
+    inputs.niri.nixosModules.niri
+    inputs.dms.nixosModules.dank-material-shell
     inputs.dms.nixosModules.greeter
+    inputs.dms.homeModules.niri
 ];
-
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -20,15 +22,31 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  networking.hostName = "nixos"; 
+  networking.hostName = "nixos";
 
   programs.niri.enable = true;
+
   programs.dank-material-shell.greeter = {
     enable = true;
     compositor.name = "niri";
   };
 
-  
+  programs.dank-material-shell = {
+    enable = true;
+
+    niri = {
+      enableKeybinds = true;
+      enableSpawn = true;
+    };
+
+    enableSystemMonitoring = true;
+    enableVPN = true;
+    enableDynamicTheming = true;
+    enableAudioWavelength = true;
+    enableCalendarEvents = true;
+    enableClipboardPaste = true;
+  };
+
   security.polkit.enable = true;
   programs.dconf.enable = true;
   services.xserver.enable = true;
@@ -61,5 +79,4 @@
   ];
 
   system.stateVersion = "25.11";
-
 }
