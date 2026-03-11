@@ -27,7 +27,6 @@
       specialArgs = {inherit inputs;};
       modules = [
         ./configuration.nix
-        ./home.nix
       ];
     };
   };
