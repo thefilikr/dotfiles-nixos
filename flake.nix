@@ -1,23 +1,26 @@
 {
-  description = "NixOS configuration with Noctalia";
+  description = "NixOS Niri desktop";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    niri.url = "github:sodiboo/niri-flake";
   };
 
-  outputs = inputs@{ self, nixpkgs, ... }: {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
+  outputs = { self, nixpkgs, niri, ... }@inputs:
+  let
+    system = "x86_64-linux";
+  in {
+    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+      inherit system;
+
       modules = [
-        # ... other modules
-        ./configuration.nix
-        ./noctalia.nix
+        ./hosts/desktop/configuration.nix
+
+        niri.nixosModules.niri
       ];
+
+      specialArgs = { inherit inputs; };
     };
   };
 }
