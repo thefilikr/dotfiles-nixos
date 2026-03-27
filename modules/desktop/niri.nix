@@ -13,6 +13,13 @@
           "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd niri-session";
         user = "greeter";
       };
+      spawn-at-startup = [
+        {
+          command = [
+            "noctalia-shell"
+          ];
+        }
+      ];
     };
   };
 
