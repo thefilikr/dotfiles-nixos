@@ -15,7 +15,6 @@
       "video"
       "input"
     ];
-    shell = pkgs.fish;
   };
 
   security.sudo.enable = true;
